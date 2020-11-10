@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>局部组件的使用</title>
+</head>
+<body>
+<div id="app">
+
+</div>
+
+<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    // 全局组件
+    Vue.component("myBtn",{
+        template:`
+            <button>按钮</button>
+        `,
+    })
+
+    // 局部组件
+    // 1.0 声子
+    let myApp = {
+        data() {
+            return {}
+        },
+        template: `
+          <div>
+          我是局部组件的入口
+          <my-btn></my-btn>
+          <my-btn></my-btn>
+          </div>`
+    }
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {}
+        },
+        components: {
+            // 2.挂子
+            myApp
+        },
+        // 3. 用子
+        template: `
+          <my-app></my-app>
+        `,
+    });
+
+</script>
+</body>
+</html>

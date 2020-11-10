@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>通过prop往子组件传值</title>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+
+    // 一、父组件给子组件传值
+    // 1. 先给父组件中绑定自定义属性
+    // 2. 在子组件中使用props接收父组件传递的数据
+    // 3. 可以在子组件中任意使用
+
+    // 二、 通过事件向子组件发送消息 子---->父
+    // 1、在父组件绑定自定义事件
+    // 2. 在子组件中触发原生的事件，在函数中使用 $emit触发自定义的childHandler
+
+
+    // 1. Parent 2. Child
+    Vue.component('Parent', {
+        data() {
+            return {
+                msg: '我是来自父组件的数据！'
+            }
+        },
+        template: `
+          <div>
+          <p>我是父组件</p>
+         父： <input v-model="msg" type="text" />
+          <child @childHandler="childHandler"></child>
+          </div>
+        `,
+        methods: {
+            childHandler(val) {
+                this.msg= val;
+            }
+        },
+    })
+
+    Vue.component('Child', {
+        data(){
+            return {
+                msg:'我是来自子组件的内容'
+            }
+        },
+        template: `
+          <div>
+          <p>我是子组件</p>
+          子：<input type="text" v-model="msg" @input="changeValue(msg)"></input>
+          </div>
+        `,
+        methods:{
+            changeValue(val){
+                // $emit(自定义事件名，消息) 触发事件
+                // 自定义事件一定要通过$.$emit（） 去触发
+                this.$emit('childHandler',val)
+            }
+        }
+    })
+
+    var App = {
+        data() {
+            return {}
+        },
+        template: `
+          <div>
+          <parent></parent>
+          </div>`,
+        components: {}
+    }
+
+    let vm = new Vue({
+        el: '#app',
+        data() {
+            return {}
+        },
+        components: {
+            App
+        },
+        methods: {},
+        template: `
+          <App></App>
+        `,
+    });
+</script>
+</body>
+</html>

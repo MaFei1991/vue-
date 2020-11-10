@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .box {
+            width: 200px;
+            height: 200px;
+            background: red;
+        }
+
+        .active {
+            background: green;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+<script type="text/javascript">
+    // 创建实例对象
+    // 1、 双大括号插值 {{ }}
+    // 2、 v-text innerText
+    // 3、 v-html innerHtml
+    // 4、 v-if 数据属性对应的值，因为为假，则不再页面中渲染，反之亦然
+    // 5、 v-show 控制dom元素的显示隐藏 display:none|block; -- 需要平凡切换的时候使用
+    // 6、 v-bind: 可以绑定dom元素的内置属性 or 自定义属性 -- 简写 :
+    // 7、 v-on:事件名=‘函数名’  -- 简便写法： @事件名=函数名
+    // 8、 v-for 遍历集合，遍历对象
+    // 9、 v-model: 模型字段  -- 表单双向数据绑定,只能用在有value属性上， 语法糖。
+    // 10 组件： 局部组件（局部组件内容使用）、全局组件（全局共享）--> 父子组件
+
+    // 1. 声明局部组件 打油诗： 声子 挂子 用子
+    let App = {
+        data() {
+            return {};
+        },
+        methods:{
+            clickHandler(){
+                console.log(this);
+            }
+        },
+        template: `<div @click="clickHandler">
+        入口组件
+        </div>`
+    }
+
+
+    // 先写数据
+    let vm = new Vue({   // viewmodel
+        el: "#app",
+        data() {
+            return {   // 定义vm对象的属性
+                msg: '指令系统',
+                msg2: '<h1>指令系统2</h1>',
+                isShow: true,
+                isActive: false,
+                menus: [
+                    {id: 1, name: '大腰子', price: 70},
+                    {id: 2, name: '宫爆鸡丁', price: 60},
+                    {id: 3, name: '番茄鸡蛋', price: 40},
+                    {id: 4, name: '红烧牛肉', price: 50},
+                ],
+                person: {
+                    name: "付学锐",
+                    age: 20,
+                    fav: 'av'
+                },
+            }
+        },
+        components:{ // 2. 挂载组件
+            App
+        },
+        template: `
+          <div class="app">
+
+
+          3. 使用组件
+          <App></App>
+
+          <h2>{{ msg }}</h2>
+          <p v-text="msg"></p>
+          <p v-html="msg2"></p>
+          <p v-if="isShow">超级玩家上线</p>
+          <div v-if="Math.random() > 0.5">显示</div>
+          <div v-else>
+            数据小于0.5
+          </div>
+          <div class="box" @click="clickHandler" :class="{active:isActive}">
+
+          </div>
+          <div>
+            <ul>
+              <li v-for="(m,index) in menus">序号：{{ m.id }} - 商品名:{{ m.name }}- 价格：{{ m.price }}</li>
+            </ul>
+            <ul>
+              <li v-for="(value,key) in person">
+                {{ key }}----{{ value }}
+              </li>
+            </ul>
+
+            <input type="text" v-model="msg"  @change="changeInput">
+          </div>
+
+          </div>`,
+        methods: {
+            clickHandler(e) {
+                this.isActive = !this.isActive;
+            },
+            changeInput(e){
+                console.log(e.target.value);
+            }
+        }
+    });
+
+    console.log(vm);
+</script>
+</body>
+</html>
